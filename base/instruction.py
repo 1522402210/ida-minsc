@@ -894,6 +894,7 @@ def is_calli(ea):
 
 ## operand type registration
 ## XXX: This namespace is deleted after each method has been assigned to their lookup table
+@document.hidden
 class operand_types:
     """
     This internal namespace is responsible for registering the operand
@@ -1122,11 +1123,14 @@ class operand_types:
 del(operand_types)
 
 ## intel operands
+@document.namespace
+@document.rename('intel-operands')
 class intelops:
     """
     This internal namespace contains the different operand types that
     can be returned for the Intel architecture.
     """
+    @document.classdef
     class SegmentOffset(interface.namedtypedtuple, interface.symbol_t):
         """
         A tuple representing an address with a segment register attached for Intel.
@@ -1146,6 +1150,7 @@ class intelops:
             if s is not None: yield s
     SO = SegmentOffset
 
+    @document.classdef
     class SegmentOffsetBaseIndexScale(interface.namedtypedtuple, interface.symbol_t):
         """
         A tuple representing a memory phrase for the Intel architecture.
@@ -1172,6 +1177,7 @@ class intelops:
             if i is not None: yield i
     SOBIS = SegmentOffsetBaseIndexScale
 
+    @document.classdef
     class OffsetBaseIndexScale(interface.namedtypedtuple, interface.symbol_t):
         """
         A tuple representing a memory phrase for the Intel architecture.
@@ -1196,12 +1202,15 @@ class intelops:
     OBIS = OffsetBaseIndexScale
 
 ## arm operands
+@document.namespace
+@document.rename('arm-operands')
 class armops:
     """
     This internal namespace contains the different operand types that
     can be returned for the ARM architecture.
     """
 
+    @document.classdef
     class flex(interface.namedtypedtuple, interface.symbol_t):
         """
         A tuple representing a flexible operand as available on the ARM architecture.
@@ -1226,6 +1235,7 @@ class armops:
             r, _, _ = self
             yield r
 
+    @document.classdef
     class list(interface.namedtypedtuple, interface.symbol_t):
         """
         A tuple representing a register list on the ARM architecture.
@@ -1242,6 +1252,7 @@ class armops:
             res, = self
             for r in res: yield r
 
+    @document.classdef
     class disp(interface.namedtypedtuple, interface.symbol_t):
         """
         A tuple representing a memory displacement on the ARM architecture.
@@ -1264,6 +1275,7 @@ class armops:
             r, _ = self
             yield r
 
+    @document.classdef
     class phrase(interface.namedtypedtuple, interface.symbol_t):
         """
         A tuple for representing a memory phrase on the ARM architecture
@@ -1287,6 +1299,7 @@ class armops:
             yield rn
             yield rm
 
+    @document.classdef
     class mem(interface.namedtypedtuple, interface.symbol_t):
         """
         A tuple for representing a memory operand on the ARM architecture.
@@ -1304,12 +1317,15 @@ class armops:
             yield   # so that this function is still treated as a generator
 
 ## mips operands
+@document.namespace
+@document.rename('mips-operands')
 class mipsops:
     """
     This internal namespace contains the different operand types that
     can be returned for the MIPS architecture.
     """
 
+    @document.classdef
     class phrase(interface.namedtypedtuple, interface.symbol_t):
         """
         A tuple for representing a memory phrase on the MIPS architecture.
@@ -1329,6 +1345,7 @@ class mipsops:
             r, _ = self
             yield r
 
+    @document.hidden
     @staticmethod
     def coproc(regnum):
         """
@@ -1349,6 +1366,7 @@ class mipsops:
         return res[regnum] if regnum in res else architecture.by_name("{:d}".format(regnum))
 
 ## architecture registers
+@document.classdef
 class Intel(interface.architecture_t):
     """
     An implementation of all the registers available on the Intel architecture.
@@ -1408,6 +1426,7 @@ class Intel(interface.architecture_t):
         ##mxcsr
         ## 'cf', 'zf', 'sf', 'of', 'pf', 'af', 'tf', 'if', 'df', 'efl',
 
+@document.classdef
 class AArch32(interface.architecture_t):
     """
     An implementation of all the registers available on the AArch32 (ARM) architecture.
@@ -1437,6 +1456,7 @@ class AArch32(interface.architecture_t):
 
         # FIXME: include x registers
 
+@document.classdef
 class Mips(interface.architecture_t):
     """
     An implementation of all the registers available on the MIPS architecture.
